@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Reservasi Buku</title>
+</head>
+<body>
+<h1>Reservasi Buku</h1>
+<p>Anggota: <b th:text="${idAnggota}">A001</b></p>
+
+<div th:if="${sukses}" style="color:#1b5e20">
+    <p th:text="${sukses}">Berhasil</p>
+</div>
+<div th:if="${galat}" style="color:#b00020">
+    <p th:text="${galat}">Gagal</p>
+</div>
+
+<table border="1">
+    <tr><th>No. Reservasi</th><th>Buku</th><th>Tanggal</th><th>Status</th><th>Aksi</th></tr>
+    <tr th:each="r : ${daftarReservasi}">
+        <td th:text="${r.idReservasi}">R0001</td>
+        <td th:text="${r.judulBuku}">Judul</td>
+        <td th:text="${r.tanggalReservasi}">2026-11-01</td>
+        <td th:text="${r.status}">MENUNGGU</td>
+        <td>
+            <form th:if="${r.bisaDibatalkan}" th:action="@{/reservasi/batal}" method="post">
+                <input type="hidden" name="idReservasi" th:value="${r.idReservasi}">
+                <button type="submit">Batalkan</button>
+            </form>
+        </td>
+    </tr>
+</table>
+<p th:if="${#lists.isEmpty(daftarReservasi)}">Belum ada reservasi.</p>
+<p><a th:href="@{/pinjam}">Kembali ke Pinjam Buku</a></p>
+</body>
+</html>
